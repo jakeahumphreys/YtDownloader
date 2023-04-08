@@ -1,0 +1,67 @@
+﻿@page "/"
+@using YtDownloader.Services
+@using System.IO
+@using JCommon.ErrorHandling
+@using YtDownloader.Common
+
+@if (Errors.Count > 0)
+{
+    foreach (var error in Errors)
+    {
+        <MudAlert Severity="Severity.Error">@error.Message</MudAlert>
+    }
+}
+
+@if (DownloadsEnabled)
+{
+    <MudContainer>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudTextField @bind-Value="VideoUrl" Label="Youtube URL" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Link" AdornmentColor="Color.Info" />
+            </MudItem>
+            <MudItem>
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Color="Color.Primary" OnClick="() => DownloadVideoFromUrl()">
+                    Download Now
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+}
+
+@code
+{
+    [Inject] IDownloadService _downloadService { get; set; }
+    
+    public List<Error> Errors { get; set; }
+    public string VideoUrl { get; set; }
+    public bool DownloadsEnabled { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        Errors = new List<Error>();
+        DownloadsEnabled = true;
+
+        if (!IsFfmPegPresent())
+        {
+            DownloadsEnabled = false;
+            Errors.Add(new Error($"Ffmpeg.exe is not present at {FilePathHelper.FfmPegExe}, downloads are not possible at this time."));
+            StateHasChanged();
+        }
+
+        
+        return base.OnInitializedAsync();
+    }
+
+    public async void DownloadVideoFromUrl()
+    {
+        if (!string.IsNullOrWhiteSpace(VideoUrl))
+        {
+            await _downloadService.SaveAudioToDisk(VideoUrl);
+        }
+    }
+
+    private bool IsFfmPegPresent()
+    {
+        return File.Exists(FilePathHelper.FfmPegExe);
+    }
+}

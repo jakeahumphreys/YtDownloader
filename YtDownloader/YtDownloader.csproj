@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows7.0</TargetFramework>
+        <!-- Project Options -->
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>YtDownloader</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="JCommon" Version="1.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.*" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+        <PackageReference Include="MudBlazor" Version="6.2.1-dev3" />
+        <PackageReference Include="MudBlazor.ThemeManager" Version="1.0.7" />
+        <PackageReference Include="YoutubeExplode" Version="6.2.12" />
+        <PackageReference Include="YoutubeExplode.Converter" Version="6.2.12" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="wwwroot\css\app.css">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="wwwroot\css\bootstrap\bootstrap.min.css">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="wwwroot\index.html">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+</Project>

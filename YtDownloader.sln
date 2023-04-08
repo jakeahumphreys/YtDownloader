@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YtDownloader", "YtDownloader\YtDownloader.csproj", "{003ECFC4-B6EE-4C3C-A2CB-3FC1F2499526}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{003ECFC4-B6EE-4C3C-A2CB-3FC1F2499526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{003ECFC4-B6EE-4C3C-A2CB-3FC1F2499526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{003ECFC4-B6EE-4C3C-A2CB-3FC1F2499526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{003ECFC4-B6EE-4C3C-A2CB-3FC1F2499526}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
