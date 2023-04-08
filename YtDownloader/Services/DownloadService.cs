@@ -1,12 +1,13 @@
 ﻿using YoutubeExplode;
 using YoutubeExplode.Converter;
 using YtDownloader.Common;
+using YtDownloader.Types;
 
 namespace YtDownloader.Services;
 
 public interface IDownloadService
 {
-    public Task SaveAudioToDisk(string url);
+    public Task<DownloadHistory> SaveAudioToDisk(string url);
 }
 
 public sealed class DownloadService : IDownloadService
@@ -18,10 +19,31 @@ public sealed class DownloadService : IDownloadService
         _youtubeClient = youtubeClient;
     }
 
-    public async Task SaveAudioToDisk(string url)
+    public async Task<DownloadHistory> SaveAudioToDisk(string url)
     {
-        await _youtubeClient.Videos.DownloadAsync(url, $"{FilePathHelper.ExportDirectory}\\Download {DateTime.Now.ToString("dd-MM-yyyy hh-mm-ss")}.mp3", options => options
-            .SetContainer("mp4")
-            .SetFFmpegPath(FilePathHelper.FfmPegExe));
+        var downloadId = Guid.NewGuid();
+        try
+        {
+            await _youtubeClient.Videos.DownloadAsync(url, $"{FilePathHelper.ExportDirectory}\\Download {DateTime.Now.ToString("dd-MM-yyyy hh-mm-ss")}.mp3", options => options
+                .SetContainer("mp4")
+                .SetFFmpegPath(FilePathHelper.FfmPegExe));
+
+            return new DownloadHistory
+            {
+                Id = downloadId,
+                Success = true,
+                Url = url
+            };
+        }
+        catch (Exception exception)
+        {
+            return new DownloadHistory
+            {
+                Id = downloadId,
+                Url = url,
+                Success = false
+            };
+        }
+        
     }
 }
