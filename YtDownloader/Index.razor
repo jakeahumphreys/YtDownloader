@@ -9,6 +9,18 @@
 }
 
 <MudGrid>
+    <MudItem xs="12" Class="mb-2">
+        <MudText Typo="Typo.subtitle1">Logs</MudText>
+        <MudDivider/>
+        <MudPaper Class="pa-4 mud-height-full" Outlined="true">
+            <MudList Clickable="false" Dense="true" DisableGutters="true">
+                @foreach (var item in LogItems)
+                {
+                    <MudListItem Text="@item.Message" Icon="@item.Icon"/>
+                }
+            </MudList>
+        </MudPaper>
+    </MudItem>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4 mud-height-full" Outlined="true">
             <MudItem>
@@ -25,7 +37,7 @@
     @if (DownloadsEnabled)
     {
         <MudItem xs="12" sm="5">
-            <MudPaper Class="pa-4 mud-height-full" Outlined="true">
+            <MudPaper Class="pa-4 mud-height-full overflow-scroll" Outlined="true">
                 <MudGrid>
                     @if (DownloadHistoryItems.Count > 0)
                     {
@@ -53,16 +65,6 @@
                         </MudItem>
                     }
                 </MudGrid>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="12">
-            <MudPaper Class="pa-4 mud-height-full" Outlined="true">
-                <MudList Clickable="false" Dense="true" DisableGutters="true">
-                    @foreach (var item in LogItems)
-                    {
-                        <MudListItem Text="@item.Message" Icon="@item.Icon" />
-                    }
-                </MudList>
             </MudPaper>
         </MudItem>
     }
