@@ -32,7 +32,7 @@
     {
         <MudItem xs="12" sm="5">
             <MudPaper Class="pa-4 mud-height-full" Outlined="true">
-                 <MudGrid>
+                <MudGrid>
                     @if (DownloadHistoryItems.Count > 0)
                     {
                         <MudItem xs="12">
@@ -61,6 +61,16 @@
                 </MudGrid>
             </MudPaper>
         </MudItem>
+        <MudItem xs="12">
+            <MudPaper Class="pa-4 mud-height-full" Outlined="true">
+                <MudList Clickable="false" Dense="true" DisableGutters="true">
+                    @foreach (var item in LogItems)
+                    {
+                        <MudListItem Text="@item.Message" Icon="@item.Icon" />
+                    }
+                </MudList>
+            </MudPaper>
+        </MudItem>
     }
 
 </MudGrid>
@@ -71,6 +81,7 @@
     
     public List<Error> Errors { get; set; }
     public List<DownloadHistory> DownloadHistoryItems { get; set; }
+    public List<LogItem> LogItems { get; set; }
     public string VideoUrl { get; set; }
     public bool DownloadsEnabled { get; set; }
 
@@ -78,6 +89,7 @@
     {
         Errors = new List<Error>();
         DownloadHistoryItems = new List<DownloadHistory>();
+        LogItems = new List<LogItem>();
         DownloadsEnabled = true;
 
         if (!IsFfmPegPresent())
@@ -91,6 +103,17 @@
         return base.OnInitializedAsync();
     }
 
+    public async void AddLog(string icon, string message)
+    {
+        LogItems.Add(new LogItem
+        {
+            OccurredAt = DateTime.Now,
+            Icon = icon,
+            Message = message
+        });
+        StateHasChanged();
+    }
+
     public async void ShowFile(string path)
     {
         Process.Start("explorer.exe", $"/select,{path}");
@@ -101,14 +124,17 @@
         if (!string.IsNullOrWhiteSpace(VideoUrl))
         {
             var downloadResult = await _downloadService.SaveAudioToDisk(VideoUrl);
+            
+            AddLog(@Icons.Material.Filled.Info, $"Attempting to download {VideoUrl}");
 
             if (downloadResult.IsFailure)
             {
-                Errors.Add(downloadResult.Errors.First());
+                AddLog(Icons.Material.Filled.Error, $"Download failed: {downloadResult.Errors.First()}");
                 StateHasChanged();
                 return;
             }
             
+            AddLog(Icons.Material.Filled.Check, $"Downloaded {downloadResult.Content.Title} successfully!");
             DownloadHistoryItems.Add(downloadResult.Content);
             StateHasChanged();
         }
