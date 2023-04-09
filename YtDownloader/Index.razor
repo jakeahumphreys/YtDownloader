@@ -12,11 +12,11 @@
     <MudItem xs="12" Class="mb-2">
         <MudText Typo="Typo.subtitle1">Logs</MudText>
         <MudDivider/>
-        <MudPaper Class="pa-4 mud-height-full" Outlined="true">
+        <MudPaper Class="pa-4 mud-height-full overflow-scroll" MaxHeight="150px" Outlined="true">
             <MudList Clickable="false" Dense="true" DisableGutters="true">
                 @foreach (var item in LogItems)
                 {
-                    <MudListItem Text="@item.Message" Icon="@item.Icon"/>
+                    <MudListItem Text="@item.Message" Icon="@item.Icon" IconColor="@item.IconColour"/>
                 }
             </MudList>
         </MudPaper>

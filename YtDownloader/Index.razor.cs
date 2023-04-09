@@ -37,12 +37,13 @@ public partial class Index
         return base.OnInitializedAsync();
     }
 
-    private void AddLog(string icon, string message)
+    private void AddLog(string icon, Color iconColour, string message)
     {
         LogItems.Add(new LogItem
         {
             OccurredAt = DateTime.Now,
             Icon = icon,
+            IconColour = iconColour,
             Message = message
         });
         StateHasChanged();
@@ -55,7 +56,7 @@ public partial class Index
 
     private async Task CallDownload()
     {
-        AddLog(@Icons.Material.Filled.Info, $"Attempting to download {VideoUrl}");
+        AddLog(@Icons.Material.Filled.Info, Color.Info  ,$"Attempting to download {VideoUrl}");
         await DownloadVideoFromUrl();
     }
 
@@ -67,12 +68,12 @@ public partial class Index
             
             if (downloadResult.IsFailure)
             {
-                AddLog(Icons.Material.Filled.Error, $"Download failed: {downloadResult.Errors.First().Message}");
+                AddLog(Icons.Material.Filled.Error, Color.Error,$"Download failed: {downloadResult.Errors.First().Message}");
                 StateHasChanged();
                 return;
             }
             
-            AddLog(Icons.Material.Filled.Check, $"Downloaded {downloadResult.Content.Title} successfully!");
+            AddLog(Icons.Material.Filled.Check, Color.Success,$"Downloaded {downloadResult.Content.Title} successfully!");
             DownloadHistoryItems.Add(downloadResult.Content);
             StateHasChanged();
         }
