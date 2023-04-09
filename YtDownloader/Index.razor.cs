@@ -67,7 +67,7 @@ public partial class Index
             
             if (downloadResult.IsFailure)
             {
-                AddLog(Icons.Material.Filled.Error, $"Download failed: {downloadResult.Errors.First()}");
+                AddLog(Icons.Material.Filled.Error, $"Download failed: {downloadResult.Errors.First().Message}");
                 StateHasChanged();
                 return;
             }
