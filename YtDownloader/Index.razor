@@ -22,7 +22,7 @@
             </MudItem>
             <br/>
             <MudItem>
-                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Color="Color.Primary" OnClick="() => DownloadVideoFromUrl()">
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Color="Color.Primary" OnClick="async () => await CallDownload()">
                     Download Now
                 </MudButton>
             </MudItem>
@@ -103,7 +103,7 @@
         return base.OnInitializedAsync();
     }
 
-    public async void AddLog(string icon, string message)
+    private void AddLog(string icon, string message)
     {
         LogItems.Add(new LogItem
         {
@@ -114,19 +114,23 @@
         StateHasChanged();
     }
 
-    public async void ShowFile(string path)
+    private void ShowFile(string path)
     {
         Process.Start("explorer.exe", $"/select,{path}");
     }
 
-    public async void DownloadVideoFromUrl()
+    private async Task CallDownload()
+    {
+        AddLog(@Icons.Material.Filled.Info, $"Attempting to download {VideoUrl}");
+        await DownloadVideoFromUrl();
+    }
+
+    private async Task DownloadVideoFromUrl()
     {
         if (!string.IsNullOrWhiteSpace(VideoUrl))
         {
             var downloadResult = await _downloadService.SaveAudioToDisk(VideoUrl);
             
-            AddLog(@Icons.Material.Filled.Info, $"Attempting to download {VideoUrl}");
-
             if (downloadResult.IsFailure)
             {
                 AddLog(Icons.Material.Filled.Error, $"Download failed: {downloadResult.Errors.First()}");
