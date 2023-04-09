@@ -8,5 +8,6 @@ public sealed class DownloadHistory
     public string Author { get; set; }
     public string Duration { get; set; }
     public string ThumbnailUrl { get; set; }
+    public string LocationOnDisk { get; set; }
     public bool Success { get; set; }
 }

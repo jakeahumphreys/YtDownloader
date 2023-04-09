@@ -42,7 +42,8 @@ public sealed class DownloadService : IDownloadService
                 Author = video.Author.ChannelTitle,
                 Success = true,
                 Url = url,
-                ThumbnailUrl = thumbnailUrl
+                ThumbnailUrl = thumbnailUrl,
+                LocationOnDisk = filePath
             };
         }
         catch (Exception exception)

@@ -4,6 +4,7 @@
 @using JCommon.ErrorHandling
 @using YtDownloader.Common
 @using YtDownloader.Types
+@using System.Diagnostics
 
 @if (Errors.Count > 0)
 {
@@ -58,7 +59,10 @@
                                         </MudCardContent>
                                         <MudCardMedia Image="@historyItem.ThumbnailUrl" Height="250"/>
                                         <MudCardActions>
-                                            <MudButton Variant="Variant.Text" Color="Color.Primary">Something</MudButton>
+                                            @if (historyItem.Success)
+                                            {
+                                                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="(() => ShowFile(historyItem.LocationOnDisk))">Open File</MudButton>
+                                            }
                                         </MudCardActions>
                                     </MudCard>
                                 }
@@ -102,6 +106,11 @@
 
         
         return base.OnInitializedAsync();
+    }
+
+    public async void ShowFile(string path)
+    {
+        Process.Start("explorer.exe", $"/select,{path}");
     }
 
     public async void DownloadVideoFromUrl()
