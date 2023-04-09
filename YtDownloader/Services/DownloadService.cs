@@ -24,15 +24,23 @@ public sealed class DownloadService : IDownloadService
         var downloadId = Guid.NewGuid();
         try
         {
+            var video = await _youtubeClient.Videos.GetAsync(url);
+
             await _youtubeClient.Videos.DownloadAsync(url, $"{FilePathHelper.ExportDirectory}\\Download {DateTime.Now.ToString("dd-MM-yyyy hh-mm-ss")}.mp3", options => options
                 .SetContainer("mp4")
                 .SetFFmpegPath(FilePathHelper.FfmPegExe));
 
+            var thumbnailUrl = video.Thumbnails.First().Url;
+
             return new DownloadHistory
             {
                 Id = downloadId,
+                Title = video.Title,
+                Duration = video.Duration.ToString(),
+                Author = video.Author.ChannelTitle,
                 Success = true,
-                Url = url
+                Url = url,
+                ThumbnailUrl = thumbnailUrl
             };
         }
         catch (Exception exception)

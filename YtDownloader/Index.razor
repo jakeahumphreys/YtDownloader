@@ -45,7 +45,11 @@
                                 <MudCardContent>
                                     <MudText>@historyItem.Id</MudText>
                                     <MudText Typo="Typo.body2">@historyItem.Url</MudText>
+                                    <MudText Typo="Typo.body2">@historyItem.Title</MudText>
+                                    <MudText Typo="Typo.body2">@historyItem.Author</MudText>
+                                    <MudText Typo="Typo.body2">@historyItem.Duration</MudText>
                                 </MudCardContent>
+                                 <MudCardMedia Image="@historyItem.ThumbnailUrl" Height="250" />
                                 <MudCardActions>
                                     <MudButton Variant="Variant.Text" Color="Color.Primary">Something</MudButton>
                                 </MudCardActions>
