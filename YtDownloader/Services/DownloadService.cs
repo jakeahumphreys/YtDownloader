@@ -26,7 +26,9 @@ public sealed class DownloadService : IDownloadService
         {
             var video = await _youtubeClient.Videos.GetAsync(url);
 
-            await _youtubeClient.Videos.DownloadAsync(url, $"{FilePathHelper.ExportDirectory}\\Download {DateTime.Now.ToString("dd-MM-yyyy hh-mm-ss")}.mp3", options => options
+            var filePath = $"{FilePathHelper.ExportDirectory}\\{video.Title}.mp3";
+
+            await _youtubeClient.Videos.DownloadAsync(url,filePath, options => options
                 .SetContainer("mp4")
                 .SetFFmpegPath(FilePathHelper.FfmPegExe));
 
