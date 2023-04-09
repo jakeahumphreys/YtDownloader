@@ -41,28 +41,17 @@
                                 {
                                     <MudCard Outlined="true" Class="p-2">
                                         <MudCardHeader>
-                                            @if (historyItem.Success)
-                                            {
-                                                <MudChip Color="Color.Success">Success</MudChip>
-                                            }
-                                            else
-                                            {
-                                                <MudChip Color="Color.Error">Failed</MudChip>
-                                            }
+                                            <MudText Typo="Typo.body2">@historyItem.Title</MudText>
                                         </MudCardHeader>
                                         <MudCardContent>
                                             <MudText>@historyItem.Id</MudText>
                                             <MudText Typo="Typo.body2">@historyItem.Url</MudText>
-                                            <MudText Typo="Typo.body2">@historyItem.Title</MudText>
                                             <MudText Typo="Typo.body2">@historyItem.Author</MudText>
                                             <MudText Typo="Typo.body2">@historyItem.Duration</MudText>
                                         </MudCardContent>
                                         <MudCardMedia Image="@historyItem.ThumbnailUrl" Height="250"/>
                                         <MudCardActions>
-                                            @if (historyItem.Success)
-                                            {
-                                                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="(() => ShowFile(historyItem.LocationOnDisk))">Open File</MudButton>
-                                            }
+                                            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="(() => ShowFile(historyItem.LocationOnDisk))">Open File</MudButton>
                                         </MudCardActions>
                                     </MudCard>
                                 }
@@ -75,12 +64,6 @@
     }
 
 </MudGrid>
-
-
-@if (DownloadsEnabled)
-{
-
-}
 
 @code
 {
@@ -117,8 +100,16 @@
     {
         if (!string.IsNullOrWhiteSpace(VideoUrl))
         {
-            var download = await _downloadService.SaveAudioToDisk(VideoUrl);
-            DownloadHistoryItems.Add(download);
+            var downloadResult = await _downloadService.SaveAudioToDisk(VideoUrl);
+
+            if (downloadResult.IsFailure)
+            {
+                Errors.Add(downloadResult.Errors.First());
+                StateHasChanged();
+                return;
+            }
+            
+            DownloadHistoryItems.Add(downloadResult.Content);
             StateHasChanged();
         }
     }

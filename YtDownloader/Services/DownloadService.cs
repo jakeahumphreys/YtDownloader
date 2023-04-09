@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using JCommon.Communication.Internal;
 using YoutubeExplode;
 using YoutubeExplode.Converter;
 using YtDownloader.Common;
@@ -8,7 +9,7 @@ namespace YtDownloader.Services;
 
 public interface IDownloadService
 {
-    public Task<DownloadHistory> SaveAudioToDisk(string url);
+    public Task<Result<DownloadHistory>> SaveAudioToDisk(string url);
 }
 
 public sealed class DownloadService : IDownloadService
@@ -20,7 +21,7 @@ public sealed class DownloadService : IDownloadService
         _youtubeClient = youtubeClient;
     }
 
-    public async Task<DownloadHistory> SaveAudioToDisk(string url)
+    public async Task<Result<DownloadHistory>> SaveAudioToDisk(string url)
     {
         var downloadId = Guid.NewGuid();
         try
@@ -38,26 +39,20 @@ public sealed class DownloadService : IDownloadService
 
             var thumbnailUrl = video.Thumbnails.First().Url;
 
-            return new DownloadHistory
+            return new Result<DownloadHistory>(new DownloadHistory
             {
                 Id = downloadId,
                 Title = video.Title,
                 Duration = video.Duration.ToString(),
                 Author = video.Author.ChannelTitle,
-                Success = true,
                 Url = url,
                 ThumbnailUrl = thumbnailUrl,
                 LocationOnDisk = filePath
-            };
+            });
         }
         catch (Exception exception)
         {
-            return new DownloadHistory
-            {
-                Id = downloadId,
-                Url = url,
-                Success = false
-            };
+            return new Result<DownloadHistory>().WithError(exception.Message);
         }
         
     }
