@@ -1,4 +1,5 @@
-﻿using YoutubeExplode;
+﻿using System.IO;
+using YoutubeExplode;
 using YoutubeExplode.Converter;
 using YtDownloader.Common;
 using YtDownloader.Types;
@@ -25,6 +26,9 @@ public sealed class DownloadService : IDownloadService
         try
         {
             var video = await _youtubeClient.Videos.GetAsync(url);
+
+            if (!Directory.Exists(FilePathHelper.ExportDirectory))
+                Directory.CreateDirectory(FilePathHelper.ExportDirectory);
 
             var filePath = $"{FilePathHelper.ExportDirectory}\\{video.Title}.mp3";
 
