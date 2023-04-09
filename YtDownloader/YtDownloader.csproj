@@ -9,6 +9,7 @@
         <UseWPF>true</UseWPF>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>YtDownloader</RootNamespace>
+        <ApplicationIcon>wwwroot\img\ytdownloader_icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -31,6 +32,10 @@
         <Content Update="wwwroot\index.html">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\img\ytdownloader_icon.ico" />
     </ItemGroup>
 
 </Project>

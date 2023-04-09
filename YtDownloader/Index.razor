@@ -13,53 +13,69 @@
     }
 }
 
-@if (DownloadsEnabled)
-{
-    <MudContainer>
-        <MudGrid>
-            <MudItem xs="12">
-                <MudTextField @bind-Value="VideoUrl" Label="Youtube URL" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Link" AdornmentColor="Color.Info" />
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4 mud-height-full" Outlined="true">
+            <MudItem>
+                <MudTextField @bind-Value="VideoUrl" Label="Youtube URL" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Link" AdornmentColor="Color.Info"/>
             </MudItem>
+            <br/>
             <MudItem>
                 <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Color="Color.Primary" OnClick="() => DownloadVideoFromUrl()">
                     Download Now
                 </MudButton>
             </MudItem>
-            @if (DownloadHistoryItems.Count > 0)
-            {
-                <MudItem xs="12">
-                    <MudContainer>
-                        @foreach (var historyItem in DownloadHistoryItems)
-                        {
-                            <MudCard Outlined="true" Class="p-2">
-                                <MudCardHeader>
-                                    @if (historyItem.Success)
-                                    {
-                                        <MudChip Color="Color.Success">Success</MudChip>
-                                    }
-                                    else
-                                    {
-                                        <MudChip Color="Color.Error">Failed</MudChip>
-                                    }
-                                </MudCardHeader>
-                                <MudCardContent>
-                                    <MudText>@historyItem.Id</MudText>
-                                    <MudText Typo="Typo.body2">@historyItem.Url</MudText>
-                                    <MudText Typo="Typo.body2">@historyItem.Title</MudText>
-                                    <MudText Typo="Typo.body2">@historyItem.Author</MudText>
-                                    <MudText Typo="Typo.body2">@historyItem.Duration</MudText>
-                                </MudCardContent>
-                                 <MudCardMedia Image="@historyItem.ThumbnailUrl" Height="250" />
-                                <MudCardActions>
-                                    <MudButton Variant="Variant.Text" Color="Color.Primary">Something</MudButton>
-                                </MudCardActions>
-                            </MudCard>
-                        }
-                    </MudContainer>
-                </MudItem>
-            }
-        </MudGrid>
-    </MudContainer>
+        </MudPaper>
+    </MudItem>
+    @if (DownloadsEnabled)
+    {
+        <MudItem xs="12" sm="5">
+            <MudPaper Class="pa-4 mud-height-full" Outlined="true">
+                 <MudGrid>
+                    @if (DownloadHistoryItems.Count > 0)
+                    {
+                        <MudItem xs="12">
+                            <MudContainer>
+                                @foreach (var historyItem in DownloadHistoryItems)
+                                {
+                                    <MudCard Outlined="true" Class="p-2">
+                                        <MudCardHeader>
+                                            @if (historyItem.Success)
+                                            {
+                                                <MudChip Color="Color.Success">Success</MudChip>
+                                            }
+                                            else
+                                            {
+                                                <MudChip Color="Color.Error">Failed</MudChip>
+                                            }
+                                        </MudCardHeader>
+                                        <MudCardContent>
+                                            <MudText>@historyItem.Id</MudText>
+                                            <MudText Typo="Typo.body2">@historyItem.Url</MudText>
+                                            <MudText Typo="Typo.body2">@historyItem.Title</MudText>
+                                            <MudText Typo="Typo.body2">@historyItem.Author</MudText>
+                                            <MudText Typo="Typo.body2">@historyItem.Duration</MudText>
+                                        </MudCardContent>
+                                        <MudCardMedia Image="@historyItem.ThumbnailUrl" Height="250"/>
+                                        <MudCardActions>
+                                            <MudButton Variant="Variant.Text" Color="Color.Primary">Something</MudButton>
+                                        </MudCardActions>
+                                    </MudCard>
+                                }
+                            </MudContainer>
+                        </MudItem>
+                    }
+                </MudGrid>
+            </MudPaper>
+        </MudItem>
+    }
+
+</MudGrid>
+
+
+@if (DownloadsEnabled)
+{
+
 }
 
 @code
