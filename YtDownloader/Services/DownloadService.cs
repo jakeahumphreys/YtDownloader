@@ -31,7 +31,7 @@ public sealed class DownloadService : IDownloadService
             if (!Directory.Exists(FilePathHelper.ExportDirectory))
                 Directory.CreateDirectory(FilePathHelper.ExportDirectory);
 
-            var filePath = $"{FilePathHelper.ExportDirectory}\\{video.Title}.mp3";
+            var filePath = $"{FilePathHelper.ExportDirectory}\\{SanitizeFileName(video.Title)}.mp3";
 
             await _youtubeClient.Videos.DownloadAsync(url,filePath, options => options
                 .SetContainer("mp4")
@@ -55,5 +55,14 @@ public sealed class DownloadService : IDownloadService
             return new Result<DownloadHistory>().WithError(exception.Message);
         }
         
+    }
+
+    private string SanitizeFileName(string name)
+    {
+        var invalidChars = Path.GetInvalidFileNameChars();
+
+        var sanitizedFileName = new string(name.Select(c => invalidChars.Contains(c) ? '_' : c).ToArray());
+
+        return sanitizedFileName;
     }
 }
